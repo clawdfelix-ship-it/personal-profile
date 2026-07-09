@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Felix Chan — 個人介紹</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0b;
+    --surface: #111113;
+    --surface2: #1a1a1d;
+    --border: #2a2a2e;
+    --text: #ededef;
+    --muted: #7a7a80;
+    --accent: #7c6af7;
+    --accent2: #f76a8c;
+    --accent3: #4ecdc4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* Noise overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  /* Glow blobs */
+  .blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.35;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .blob-1 { width: 600px; height: 600px; background: var(--accent); top: -200px; right: -100px; animation: drift 18s ease-in-out infinite alternate; }
+  .blob-2 { width: 500px; height: 500px; background: var(--accent2); bottom: -150px; left: -100px; animation: drift 22s ease-in-out infinite alternate-reverse; }
+  .blob-3 { width: 400px; height: 400px; background: var(--accent3); top: 50%; left: 50%; transform: translate(-50%,-50%); animation: drift 26s ease-in-out infinite alternate; opacity: 0.12; }
+
+  @keyframes drift {
+    0%   { transform: translate(0, 0) scale(1); }
+    33%  { transform: translate(40px, -60px) scale(1.08); }
+    66%  { transform: translate(-30px, 40px) scale(0.95); }
+    100% { transform: translate(20px, 30px) scale(1.05); }
+  }
+
+  /* Layout */
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 80px 32px 120px;
+  }
+
+  /* Hero */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 48px;
+    margin-bottom: 80px;
+    padding-top: 40px;
+  }
+
+  .hero-text .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(124,106,247,0.1);
+    border: 1px solid rgba(124,106,247,0.25);
+    padding: 5px 12px;
+    border-radius: 100px;
+    margin-bottom: 24px;
+  }
+
+  .hero-text .tag .dot {
+    width: 5px; height: 5px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .hero-text h1 {
+    font-size: clamp(40px, 6vw, 64px);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, var(--text) 0%, var(--muted) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-text .subtitle {
+    font-size: 16px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 480px;
+    margin-bottom: 36px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 22px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-primary:hover { background: #6a58e0; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(124,106,247,0.3); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover { border-color: var(--muted); background: var(--surface2); }
+
+  /* Avatar */
+  .avatar-wrap {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .avatar {
+    width: 180px;
+    height: 180px;
+    border-radius: 20px;
+    object-fit: cover;
+    display: block;
+    background: var(--surface2);
+  }
+
+  .avatar-badge {
+    position: absolute;
+    bottom: -8px;
+    right: -8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--accent3);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .avatar-badge .dot {
+    width: 6px; height: 6px;
+    background: var(--accent3);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 0 0 64px;
+  }
+
+  /* Stats */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 72px;
+  }
+
+  .stat {
+    background: var(--surface);
+    padding: 28px 24px;
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  /* Section */
+  .section { margin-bottom: 64px; }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Tags */
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .tag-item {
+    padding: 6px 14px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    transition: all 0.15s ease;
+  }
+  .tag-item:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Timeline */
+  .timeline { display: flex; flex-direction: column; gap: 0; }
+
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 24px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .timeline-item:last-child { border-bottom: none; }
+
+  .timeline-year {
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    padding-top: 3px;
+  }
+
+  .timeline-content h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .timeline-content p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* Cards grid */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.2s ease;
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+
+  .card-icon {
+    width: 36px; height: 36px;
+    background: rgba(124,106,247,0.12);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 12px;
+    font-size: 16px;
+  }
+
+  .card h4 { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+  .card p { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+  /* Contact */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 13px;
+    transition: all 0.15s ease;
+  }
+  .contact-item:hover { border-color: var(--accent); background: var(--surface2); }
+  .contact-item .ci-icon { font-size: 16px; }
+  .contact-item .ci-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding-top: 48px;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer p { font-size: 12px; color: var(--muted); }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .hero { grid-template-columns: 1fr; gap: 32px; }
+    .avatar-wrap { order: -1; }
+    .avatar { width: 140px; height: 140px; }
+    .stats { grid-template-columns: 1fr; }
+    .cards { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .container { padding: 48px 20px 80px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .blob, .blob-1, .blob-2, .blob-3 { animation: none; }
+    .dot { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-text">
+      <div class="tag"><span class="dot"></span> Available for work</div>
+      <h1>Felix Chan</h1>
+      <p class="subtitle">
+        專注於網頁開發與系統設計，熱愛將想法轉化為流暢嘅數碼產品。<br>
+        同時經營 JAVStarMeet 演藝事務所，連結 talent 與機會。
+      </p>
+      <div class="hero-actions">
+        <a href="#" class="btn btn-primary">📬 聯絡我</a>
+        <a href="#" class="btn btn-ghost">👀 查看作品</a>
+      </div>
+    </div>
+    <div class="avatar-wrap">
+      <img src="img_11f6dced08eb.jpg" alt="Felix Chan" class="avatar" onerror="this.style.display='none'">
+      <div class="avatar-badge"><span class="dot"></span>Online</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-value">215+</div>
+      <div class="stat-label">合作演藝人員</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">7</div>
+      <div class="stat-label">合作經紀公司</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">5+</div>
+      <div class="stat-label">年開發經驗</div>
+    </div>
+  </div>
+
+  <!-- About -->
+  <div class="section">
+    <div class="section-label">關於我</div>
+    <p style="font-size:14px;color:var(--muted);line-height:1.9;max-width:640px;">
+      你可以喺呢度寫一段關於自己嘅介紹 — 背景、技能、理念，或者任何想分享嘅嘢。呢個區塊係留俾你自己填嘅。
+      文字會自動套用暗色系嘅風格同字體，保持整體一致性。
+    </p>
+  </div>
+
+  <!-- Skills -->
+  <div class="section">
+    <div class="section-label">專業技能</div>
+    <div class="tags">
+      <span class="tag-item">Python</span>
+      <span class="tag-item">JavaScript</span>
+      <span class="tag-item">TypeScript</span>
+      <span class="tag-item">React</span>
+      <span class="tag-item">Node.js</span>
+      <span class="tag-item">PostgreSQL</span>
+      <span class="tag-item">Docker</span>
+      <span class="tag-item">AWS</span>
+      <span class="tag-item">Telegram Bot</span>
+      <span class="tag-item">Web Scraping</span>
+      <span class="tag-item">自動化系統</span>
+      <span class="tag-item">WordPress</span>
+    </div>
+  </div>
+
+  <!-- Experience -->
+  <div class="section">
+    <div class="section-label">經驗</div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-year">2022 – 現在</div>
+        <div class="timeline-content">
+          <h4>JAVStarMeet 創辦人</h4>
+          <p>建立演藝人才資料庫，管理 215+ 演藝人員及 7 間經紀公司嘅數據系統。</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2020 – 2022</div>
+        <div class="timeline-content">
+          <h4>全端開發者</h4>
+          <p>專注於網頁應用、Telegram Bot 及自動化系統開發。</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2018 – 2020</div>
+        <div class="timeline-content">
+          <h4>系統管理員</h4>
+          <p>管理香港伺服器基礎設施，維護多個數碼項目嘅穩定運行。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interests -->
+  <div class="section">
+    <div class="section-label">興趣</div>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <h4>自動化系統</h4>
+        <p>將重複性工作自動化，釋放時間去做更有意義嘅事。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏍️</div>
+        <h4>賽馬分析</h4>
+        <p>業餘研究 HKJC 賽馬數據，開發量化分析工具。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <h4>健康追蹤</h4>
+        <p>開發健康監測 Telegram Bot，追踪血糖、血壓數據。</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎨</div>
+        <h4>數碼創作</h4>
+        <p>探索 AI 圖像生成與創意工具，業餘創作。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact -->
+  <div class="section">
+    <div class="section-label">聯絡方式</div>
+    <div class="contact-grid">
+      <a href="mailto:clawdfelix@gmail.com" class="contact-item">
+        <span class="ci-icon">📧</span>
+        <div>
+          <div>clawdfelix@gmail.com</div>
+          <div class="ci-label">Email</div>
+        </div>
+      </a>
+      <a href="#" class="contact-item">
+        <span class="ci-icon">💬</span>
+        <div>
+          <div>Telegram</div>
+          <div class="ci-label">@YourUsername</div>
+        </div>
+      </a>
+      <a href="#" class="contact-item">
+        <span class="ci-icon">💻</span>
+        <div>
+          <div>GitHub</div>
+          <div class="ci-label">@clawdfelix</div>
+        </div>
+      </a>
+      <a href="#" class="contact-item">
+        <span class="ci-icon">🌐</span>
+        <div>
+          <div>你的網站</div>
+          <div class="ci-label">yoursite.com</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>© 2026 Felix Chan · 用 ❤️ 製作</p>
+  </div>
+
+</div>
+
+</body>
+</html>
