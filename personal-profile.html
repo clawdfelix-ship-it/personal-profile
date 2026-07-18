@@ -54,12 +54,35 @@
     100% { transform: translate(20px, 30px) scale(1.05); }
   }
 
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
   @keyframes pulse {
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.5; transform: scale(0.8); }
   }
 
   .container { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; padding: 80px 32px 120px; }
+
+  /* Entrance animations */
+  .anim-fade-up {
+    opacity: 0;
+    animation: fadeUp 0.5s cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
+  }
+  .anim-delay-1 { animation-delay: 0.08s; }
+  .anim-delay-2 { animation-delay: 0.16s; }
+  .anim-delay-3 { animation-delay: 0.24s; }
+  .anim-delay-4 { animation-delay: 0.32s; }
+  .anim-delay-5 { animation-delay: 0.40s; }
+  .anim-delay-6 { animation-delay: 0.48s; }
+  .anim-delay-7 { animation-delay: 0.56s; }
 
   /* ── Header ── */
   .header {
@@ -131,17 +154,23 @@
     font-size: 13px;
     font-weight: 500;
     text-decoration: none;
-    transition: all 0.2s ease;
     cursor: pointer;
     border: none;
     font-family: inherit;
+    /* Instant feedback on press — spring-like cubic-bezier */
+    transition: transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 280ms cubic-bezier(0.34, 1.56, 0.64, 1),
+                background 160ms ease-out,
+                border-color 160ms ease-out;
   }
 
   .btn-primary { background: var(--accent); color: #fff; }
-  .btn-primary:hover { background: #6a58e0; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(124,106,247,0.3); }
+  .btn-primary:hover { background: #6a58e0; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(124,106,247,0.3); }
+  .btn-primary:active { transform: scale(0.96) translateY(0); box-shadow: 0 2px 8px rgba(124,106,247,0.2); transition-duration: 80ms; }
 
   .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
   .btn-ghost:hover { border-color: var(--muted); background: var(--surface2); }
+  .btn-ghost:active { transform: scale(0.97); transition-duration: 80ms; }
 
   /* Avatar */
   .avatar-wrap { position: relative; flex-shrink: 0; }
@@ -210,7 +239,9 @@
     font-size: 13px;
     transition: all 0.15s ease;
   }
+  .contact-item { transition: border-color 150ms ease-out, background 150ms ease-out, transform 150ms ease-out; }
   .contact-item:hover { border-color: var(--accent); background: var(--surface2); }
+  .contact-item:active { transform: scale(0.98); transition-duration: 60ms; }
   .contact-item .ci-icon { font-size: 18px; flex-shrink: 0; }
   .contact-item .ci-main { font-weight: 500; }
   .contact-item .ci-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
@@ -251,10 +282,13 @@
     padding: 20px;
     transition: all 0.2s ease;
   }
-  .info-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
-  .info-card .ic-icon { font-size: 20px; margin-bottom: 10px; }
-  .info-card h4 { font-size: 12px; font-weight: 600; margin-bottom: 6px; }
-  .info-card p { font-size: 12px; color: var(--muted); line-height: 1.6; }
+  .info-card { transition: transform 300ms cubic-bezier(0.34, 1.2, 0.64, 1), border-color 200ms ease-out, box-shadow 200ms ease-out; }
+  .info-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(124,106,247,0.12); }
+  .info-card:active { transform: scale(0.98) translateY(0); transition-duration: 80ms; }
+  .info-card .ic-icon { font-size: 22px; margin-bottom: 10px; display: block; }
+  .info-card h4 { font-size: 12px; font-weight: 600; margin-bottom: 6px; letter-spacing: 0.01em; }
+  .info-card p { font-size: 12px; color: var(--muted); line-height: 1.7; }
+  .info-card p br + br { display: none; }
 
   /* Tags */
   .tags { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -268,7 +302,9 @@
     font-family: 'JetBrains Mono', monospace;
     transition: all 0.15s ease;
   }
-  .tag-item:hover { border-color: var(--accent); color: var(--accent); }
+  .tag-item { transition: border-color 150ms ease-out, color 150ms ease-out, transform 150ms ease-out; }
+  .tag-item:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+  .tag-item:active { transform: scale(0.96); transition-duration: 60ms; }
 
   /* Footer */
   .footer { text-align: center; padding-top: 48px; border-top: 1px solid var(--border); }
@@ -286,6 +322,17 @@
   @media (prefers-reduced-motion: reduce) {
     .blob, .blob-1, .blob-2, .blob-3 { animation: none; }
     .dot { animation: none; }
+    .btn, .info-card, .contact-item, .tag-item {
+      transition: none !important;
+      transform: none !important;
+    }
+    .btn-primary:active, .btn-ghost:active, .info-card:active, .contact-item:active, .tag-item:active {
+      transform: none !important;
+    }
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+    }
   }
 </style>
 </head>
@@ -298,7 +345,7 @@
 <div class="container">
 
   <!-- Header -->
-  <div class="header">
+  <div class="header anim-fade-up">
     <div>
       <div class="tag"><span class="dot"></span> Merchandiser</div>
       <h1>Sally Chan 陳瑞蓮</h1>
@@ -308,16 +355,16 @@
         <a href="mailto:sallyc@pmshk.com.hk" class="btn btn-primary">📬 發送電郵</a>
       </div>
     </div>
-    <div class="avatar-wrap">
+    <div class="avatar-wrap anim-fade-up anim-delay-2">
       <img src="img_11f6dced08eb.jpg" alt="Sally Chan" class="avatar" onerror="this.style.display='none'">
       <div class="avatar-badge"><span class="dot"></span>Online</div>
     </div>
   </div>
 
-  <div class="divider"></div>
+  <div class="divider anim-fade-up anim-delay-1"></div>
 
   <!-- Company -->
-  <div class="section">
+  <div class="section anim-fade-up anim-delay-2">
     <div class="section-label">公司資料</div>
     <div class="info-grid">
       <div class="info-card">
@@ -344,7 +391,7 @@
   </div>
 
   <!-- Address -->
-  <div class="section">
+  <div class="section anim-fade-up anim-delay-3">
     <div class="section-label">公司地址</div>
     <div class="address-card">
       <div class="addr-lang">English</div>
@@ -364,45 +411,45 @@
   </div>
 
   <!-- Contact -->
-  <div class="section">
+  <div class="section anim-fade-up anim-delay-4">
     <div class="section-label">聯絡方式</div>
     <div class="contact-grid">
-      <a href="mailto:sallyc@pmshk.com.hk" class="contact-item">
+      <a href="mailto:sallyc@pmshk.com.hk" class="contact-item anim-fade-up anim-delay-5">
         <span class="ci-icon">📧</span>
         <div>
           <div class="ci-main">sallyc@pmshk.com.hk</div>
           <div class="ci-label">Email 電郵</div>
         </div>
       </a>
-      <a href="tel:+85223761886" class="contact-item">
+      <a href="tel:+85223761886" class="contact-item anim-fade-up anim-delay-5">
         <span class="ci-icon">📞</span>
         <div>
           <div class="ci-main">(852) 2376 1886</div>
           <div class="ci-label">總機 Tel（25條線路）</div>
         </div>
       </a>
-      <a href="tel:+85221702228" class="contact-item">
+      <a href="tel:+85221702228" class="contact-item anim-fade-up anim-delay-5">
         <span class="ci-icon">📱</span>
         <div>
           <div class="ci-main">(852) 2170 2228</div>
           <div class="ci-label">直線 Direct Line</div>
         </div>
       </a>
-      <a href="fax:+85223753281" class="contact-item">
+      <a href="fax:+85223753281" class="contact-item anim-fade-up anim-delay-5">
         <span class="ci-icon">📠</span>
         <div>
           <div class="ci-main">(852) 2375 3281</div>
           <div class="ci-label">傳真 Fax（3條線路）</div>
         </div>
       </a>
-      <a href="https://wa.me/85221702228" class="contact-item" target="_blank">
+      <a href="https://wa.me/85221702228" class="contact-item anim-fade-up anim-delay-5" target="_blank">
         <span class="ci-icon">💬</span>
         <div>
           <div class="ci-main">sallychan0912</div>
           <div class="ci-label">WeChat 微信</div>
         </div>
       </a>
-      <a href="https://pmshk.com.hk" class="contact-item" target="_blank">
+      <a href="https://pmshk.com.hk" class="contact-item anim-fade-up anim-delay-5" target="_blank">
         <span class="ci-icon">🌐</span>
         <div>
           <div class="ci-main">pmshk.com.hk</div>
@@ -413,7 +460,7 @@
   </div>
 
   <!-- Expertise -->
-  <div class="section">
+  <div class="section anim-fade-up anim-delay-6">
     <div class="section-label">專業範疇</div>
     <div class="tags">
       <span class="tag-item">客戶對接</span>
@@ -427,7 +474,7 @@
     </div>
   </div>
 
-  <div class="footer">
+  <div class="footer anim-fade-up anim-delay-7">
     <p>© 2026 PMS International Far East Ltd. · All Rights Reserved.</p>
   </div>
 
